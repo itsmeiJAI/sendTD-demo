@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ส่งข้อความน่ารัก ๆ ❤️</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600&display=swap');
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Kanit', sans-serif;
+      background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 50%, #fecfef 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow-x: hidden;
+    }
+    
+    /* Floating hearts animation */
+    .heart {
+      position: absolute;
+      color: rgba(255, 182, 193, 0.7);
+      font-size: 20px;
+      animation: float 6s infinite linear;
+      pointer-events: none;
+    }
+    
+    @keyframes float {
+      0% {
+        transform: translateY(100vh) rotate(0deg);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-100px) rotate(360deg);
+        opacity: 0;
+      }
+    }
+    
+    .container {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      border-radius: 30px;
+      padding: 3rem 2rem;
+      box-shadow: 0 20px 40px rgba(255, 105, 180, 0.3);
+      max-width: 500px;
+      width: 90%;
+      text-align: center;
+      position: relative;
+      border: 2px solid rgba(255, 182, 193, 0.3);
+    }
+    
+    .title {
+      font-size: 2.2rem;
+      font-weight: 600;
+      color: #ff6b9d;
+      margin-bottom: 1rem;
+      text-shadow: 0 2px 4px rgba(255, 105, 180, 0.3);
+      animation: bounce 2s infinite;
+    }
+    
+    @keyframes bounce {
+      0%, 20%, 50%, 80%, 100% {
+        transform: translateY(0);
+      }
+      40% {
+        transform: translateY(-10px);
+      }
+      60% {
+        transform: translateY(-5px);
+      }
+    }
+    
+    .subtitle {
+      font-size: 1.1rem;
+      color: #ff8fab;
+      margin-bottom: 2rem;
+      font-weight: 300;
+    }
+    
+    .input-container {
+      position: relative;
+      margin-bottom: 2rem;
+    }
+    
+    .message-input {
+      width: 100%;
+      padding: 1rem 1.5rem;
+      font-size: 1.1rem;
+      border: 3px solid #ffb3d1;
+      border-radius: 25px;
+      outline: none;
+      background: rgba(255, 255, 255, 0.9);
+      color: #666;
+      font-family: 'Kanit', sans-serif;
+      transition: all 0.3s ease;
+      box-shadow: 0 5px 15px rgba(255, 182, 193, 0.2);
+    }
+    
+    .message-input:focus {
+      border-color: #ff6b9d;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(255, 105, 180, 0.4);
+    }
+    
+    .message-input::placeholder {
+      color: #ffb3d1;
+    }
+    
+    .send-button {
+      background: linear-gradient(45deg, #ff6b9d, #ff8fab);
+      color: white;
+      border: none;
+      padding: 1rem 2.5rem;
+      font-size: 1.2rem;
+      font-weight: 500;
+      border-radius: 25px;
+      cursor: pointer;
+      font-family: 'Kanit', sans-serif;
+      transition: all 0.3s ease;
+      box-shadow: 0 5px 15px rgba(255, 105, 180, 0.4);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .send-button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 25px rgba(255, 105, 180, 0.6);
+    }
+    
+    .send-button:active {
+      transform: translateY(-1px);
+    }
+    
+    .send-button::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+      transition: left 0.5s;
+    }
+    
+    .send-button:hover::before {
+      left: 100%;
+    }
+    
+    .emoji-decoration {
+      position: absolute;
+      font-size: 2rem;
+      animation: pulse 2s infinite;
+    }
+    
+    @keyframes pulse {
+      0% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(1.1);
+      }
+      100% {
+        transform: scale(1);
+      }
+    }
+    
+    .emoji-1 {
+      top: -10px;
+      left: -10px;
+      animation-delay: 0s;
+    }
+    
+    .emoji-2 {
+      top: -10px;
+      right: -10px;
+      animation-delay: 0.5s;
+    }
+    
+    .emoji-3 {
+      bottom: -10px;
+      left: -10px;
+      animation-delay: 1s;
+    }
+    
+    .emoji-4 {
+      bottom: -10px;
+      right: -10px;
+      animation-delay: 1.5s;
+    }
+    
+    .success-message {
+      margin-top: 1rem;
+      padding: 1rem;
+      background: rgba(144, 238, 144, 0.2);
+      border: 2px solid #90EE90;
+      border-radius: 15px;
+      color: #228B22;
+      font-weight: 500;
+      display: none;
+      animation: slideIn 0.5s ease;
+    }
+    
+    @keyframes slideIn {
+      from {
+        transform: translateY(20px);
+        opacity: 0;
+      }
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+    
+    /* Sparkle animation */
+    .sparkle {
+      position: absolute;
+      width: 6px;
+      height: 6px;
+      background: #ff6b9d;
+      border-radius: 50%;
+      animation: sparkle 2s infinite;
+    }
+    
+    @keyframes sparkle {
+      0%, 100% {
+        opacity: 0;
+        transform: scale(0);
+      }
+      50% {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="emoji-decoration emoji-1">💖</div>
+    <div class="emoji-decoration emoji-2">🌸</div>
+    <div class="emoji-decoration emoji-3">✨</div>
+    <div class="emoji-decoration emoji-4">💕</div>
+    
+    <h1 class="title">💬 ส่งข้อความน่ารัก ๆ</h1>
+    <p class="subtitle">แชร์ความรู้สึกดี ๆ กับทุกคน ✨</p>
+    
+    <div class="input-container">
+      <input 
+        type="text" 
+        id="messageInput" 
+        class="message-input"
+        placeholder="พิมพ์ข้อความน่ารัก ๆ ของคุณ... 💝"
+        maxlength="200"
+      >
+    </div>
+    
+    <button class="send-button" onclick="sendMessage()">
+      ส่งความรัก 💌
+    </button>
+    
+    <div id="successMessage" class="success-message">
+      ส่งข้อความเรียบร้อยแล้ว! 🎉💕
+    </div>
+  </div>
+
+  <!-- Firebase SDK via CDN -->
+  <script type="module">
+    // Import Firebase
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js';
+    import { getFirestore, collection, addDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js';
+
+    // Firebase configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyAYAA--dU7azrYQaFJfsmMvfxLI-NNtoxU",
+      authDomain: "sendtd-demo.firebaseapp.com",
+      projectId: "sendtd-demo",
+      storageBucket: "sendtd-demo.firebasestorage.app",
+      messagingSenderId: "201616527485",
+      appId: "1:201616527485:web:81efdec075072761eaa114",
+      measurementId: "G-D3RF03J1N7"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    // Firebase send function
+    window.sendFirebaseMessage = async function(message) {
+      try {
+        await addDoc(collection(db, "messages"), {
+          text: message,
+          timestamp: serverTimestamp()
+        });
+        console.log("Message sent to Firebase successfully!");
+      } catch (error) {
+        console.error("Error sending to Firebase:", error);
+        throw error;
+      }
+    };
+  </script>
+  
+  <script>
+    // Create floating hearts
+    function createHeart() {
+      const heart = document.createElement('div');
+      heart.className = 'heart';
+      heart.innerHTML = ['💖', '💕', '💗', '💝', '🌸', '✨'][Math.floor(Math.random() * 6)];
+      heart.style.left = Math.random() * 100 + 'vw';
+      heart.style.animationDuration = (Math.random() * 3 + 3) + 's';
+      document.body.appendChild(heart);
+      
+      setTimeout(() => {
+        heart.remove();
+      }, 6000);
+    }
+    
+    // Create hearts periodically
+    setInterval(createHeart, 2000);
+    
+    // Create sparkles around the container
+    function createSparkle() {
+      const sparkle = document.createElement('div');
+      sparkle.className = 'sparkle';
+      sparkle.style.left = Math.random() * window.innerWidth + 'px';
+      sparkle.style.top = Math.random() * window.innerHeight + 'px';
+      document.body.appendChild(sparkle);
+      
+      setTimeout(() => {
+        sparkle.remove();
+      }, 2000);
+    }
+    
+    setInterval(createSparkle, 300);
+    
+    // Send message function
+    async function sendMessage() {
+      const input = document.getElementById('messageInput');
+      const message = input.value.trim();
+      const successDiv = document.getElementById('successMessage');
+      
+      if (!message) {
+        // Shake animation for empty input
+        input.style.animation = 'shake 0.5s';
+        setTimeout(() => {
+          input.style.animation = '';
+        }, 500);
+        return;
+      }
+      
+      try {
+        // This will use the Firebase functions from script.js
+        if (window.sendFirebaseMessage) {
+          await window.sendFirebaseMessage(message);
+        } else {
+          console.log('Firebase not loaded, simulating send:', message);
+        }
+        
+        // Show success message
+        successDiv.style.display = 'block';
+        input.value = '';
+        
+        // Hide success message after 3 seconds
+        setTimeout(() => {
+          successDiv.style.display = 'none';
+        }, 3000);
+        
+        // Add some celebratory hearts
+        for(let i = 0; i < 10; i++) {
+          setTimeout(createHeart, i * 100);
+        }
+        
+      } catch (error) {
+        console.error('Error sending message:', error);
+        alert('เกิดข้อผิดพลาดในการส่งข้อความ');
+      }
+    }
+    
+    // Allow Enter key to send
+    document.getElementById('messageInput').addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') {
+        sendMessage();
+      }
+    });
+    
+    // Add shake animation CSS
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes shake {
+        0%, 100% { transform: translateX(0); }
+        25% { transform: translateX(-5px); }
+        75% { transform: translateX(5px); }
+      }
+    `;
+    document.head.appendChild(style);
+  </script>
+
+<script>
+    function sendToTouch() {
+      const socket = new WebSocket("http://172.20.10.3:5500/"); 
+
+      socket.onopen = () => {
+        socket.send("hellooo");
+      };
+
+      socket.onerror = (err) => {
+        console.error("WebSocket error:", err);
+      };
+    }
+  </script>
+
+</body>
+</html>
