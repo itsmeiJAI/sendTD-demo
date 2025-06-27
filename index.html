@@ -239,6 +239,10 @@
         transform: scale(1);
       }
     }
+    
+    button {
+      font-family: 'Kanit', sans-serif;
+    }
   </style>
 </head>
 <body>
@@ -267,6 +271,16 @@
     
     <div id="successMessage" class="success-message">
       ส่งข้อความเรียบร้อยแล้ว! 🎉💕
+    </div>
+  </div>
+
+  <!-- Cute Alert Modal -->
+  <div id="cuteAlert" style="display:none; position:fixed; z-index:9999; left:0; top:0; width:100vw; height:100vh; background:rgba(255,182,193,0.2);">
+    <div style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); background:white; border-radius:20px; box-shadow:0 8px 32px rgba(255,105,180,0.2); padding:2rem 2.5rem; text-align:center; border:2px solid #ffb3d1;">
+      <div style="font-size:2.5rem;">🚫💖</div>
+      <div style="font-size:1.3rem; color:#ff6b9d; margin:1rem 0 0.5rem 0;">ห้ามพิมพ์คำหยาบไอเวร!</div>
+      <div style="font-size:1rem; color:#ff8fab;">เขาให้ส่งแต่ข้อความดี ๆ ไอสัส 💌</div>
+      <button onclick="closeCuteAlert()" style="margin-top:1.5rem; background:#ffb3d1; color:white; border:none; border-radius:15px; padding:0.7rem 2.5rem; font-size:1.1rem; cursor:pointer; font-family:'Kanit',sans-serif;">รับทราบไอสัส 💕</button>
     </div>
   </div>
 
@@ -339,7 +353,23 @@
     
     setInterval(createSparkle, 300);
     
+    // ฟังก์ชันบล็อคคำหยาบ
+    function containsBadWords(message) {
+      // เพิ่มคำหยาบที่ต้องการบล็อคใน array นี้
+      const badWords = [
+        "เหี้ย", "สัส", "ควาย", "fuck", "shit", "bitch", "asshole", "ควย", "หี", "อีดอก", "ไอ้เหี้ย", "อีเหี้ย", "อีควาย", "ไอ้ควาย"
+      ];
+      const lowerMessage = message.toLowerCase();
+      return badWords.some(word => lowerMessage.includes(word));
+    }
+    
     // Send message function
+    function showCuteAlert() {
+      document.getElementById('cuteAlert').style.display = 'block';
+    }
+    function closeCuteAlert() {
+      document.getElementById('cuteAlert').style.display = 'none';
+    }
     async function sendMessage() {
       const input = document.getElementById('messageInput');
       const message = input.value.trim();
@@ -347,6 +377,16 @@
       
       if (!message) {
         // Shake animation for empty input
+        input.style.animation = 'shake 0.5s';
+        setTimeout(() => {
+          input.style.animation = '';
+        }, 500);
+        return;
+      }
+      
+      // เช็คคำหยาบก่อนส่ง
+      if (containsBadWords(message)) {
+        showCuteAlert();
         input.style.animation = 'shake 0.5s';
         setTimeout(() => {
           input.style.animation = '';
