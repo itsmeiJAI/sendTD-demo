@@ -2,7 +2,7 @@
 <html lang="th">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
   <title>ส่งข้อความน่ารัก ๆ ❤️</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600&display=swap');
@@ -242,6 +242,26 @@
     
     button {
       font-family: 'Kanit', sans-serif;
+    }
+    
+    @media (max-width: 600px) {
+      .container {
+        padding: 1.2rem 0.2rem;
+        border-radius: 18px;
+        max-width: 99vw;
+      }
+      .title {
+        font-size: 1.3rem;
+      }
+      .send-button {
+        font-size: 1rem;
+        padding: 1rem 1.2rem;
+        min-width: 80vw;
+      }
+      .message-input {
+        font-size: 1rem;
+        padding: 0.8rem 1rem;
+      }
     }
   </style>
 </head>
