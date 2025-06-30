@@ -374,41 +374,50 @@
     setInterval(createSparkle, 300);
     
     function containsBadWords(message) {
-      const badWords = [
-        // คำหยาบไทยตรงๆ
-        "เหี้ย", "ไอ้เหี้ย", "อีเหี้ย", "เฮี้ย",
-        "สัส", "สัด", "สัตว์", "ไอสัส", "ไอสัด", "ไอ้สัส",
-        "ควย", "ค_ย", "คว_ย", "ควาย", "ควๅย",
-        "หี", "หิ", "ฮี", "จิ๋ม", "ห_ี",
-        "เย็ด", "เยด", "เย_ด",
-        "แตด", "ดอกทอง", "อีดอก", "ไอ้ดอก", "กระหรี่", "กะหรี่", "อีตัว",
-        "นม", "หัวนม", "ตูด", "ก้น", "ขี้", "เยี่ยว", "ฉี่",
-        "เด้า", "ซอย", "แทง", "มุด", "เสียบ", "ดูด", "ปี้", "ปิ๊", "ล่อ", "ร่อน", "ขย่ม",
-        "พ่อมึง", "แม่มึง", "พ่อ_ึง", "แม่_ึง", "ด่าแม่", "ด่าพ่อ", "ลูกกะหรี่",
-        // คำหยาบไทยแบบโรมัน (ทับศัพท์)
-        "kuy", "kuyy", "kuyyy", "kuyz", "kuay", "kwai",
-        "hee", "hie", "hii", "heee", "h33",
-        "yed", "y3d", "yedz", "yet", "yedk", "yesd", "yeddd",
-        "sad", "sud", "sut", "sadd", "suddd", "suss",
-        "dork", "dok", "dog", "doktong",
-        "jam", "jeeb", "chim", "chimm", "jimm",
-        "deaw", "dao", "dow", "doww",
-        "namkeng", "numnua", "namtaek", "namkam", "namkham",
-        "tud", "tood", "tudtud", "tutt", "tooddd",
-        // คำหยาบอังกฤษ
-        "fuck", "fck", "f**k", "f*ck", "fuk", "fuxk",
-        "shit", "sh1t", "sh!t", "crap",
-        "bitch", "biatch", "b!tch",
-        "asshole", "a**hole", "ass", "dick", "cock", "pussy",
-        "cum", "suck", "blowjob", "handjob", "jerk", "fap"
-      ];
-      const lowerMessage = message.toLowerCase();
-      // ลบช่องว่างและอักขระพิเศษทุกชนิด เหลือแต่ตัวอักษร/ตัวเลข
-      const compactMessage = lowerMessage.replace(/[^a-zA-Z0-9ก-๙]+/g, '');
-      return badWords.some(word =>
-        lowerMessage.includes(word) || compactMessage.includes(word)
-      );
-    }
+  const badWords = [
+    // คำหยาบไทยตรงๆ
+    "เหี้ย", "ไอ้เหี้ย", "อีเหี้ย", "เฮี้ย",
+    "สัส", "สัด", "สัตว์", "ไอสัส", "ไอสัด", "ไอ้สัส",
+    "ควย", "ค_ย", "คว_ย", "ควาย", "ควๅย",
+    "หี", "หิ", "ฮี", "จิ๋ม", "ห_ี",
+    "เย็ด", "เยด", "เย_ด",
+    "แตด", "ดอกทอง", "อีดอก", "ไอ้ดอก", "กระหรี่", "กะหรี่", "อีตัว",
+    "นม", "หัวนม", "ตูด", "ก้น", "ขี้", "เยี่ยว", "ฉี่",
+    "เด้า", "ซอย", "แทง", "มุด", "เสียบ", "ดูด", "ปี้", "ปิ๊", "ล่อ", "ร่อน", "ขย่ม",
+    "พ่อมึง", "แม่มึง", "พ่อ_ึง", "แม่_ึง", "ด่าแม่", "ด่าพ่อ", "ลูกกะหรี่",
+    "อีห่า", "ไอ้ห่า", "ห่าราก", "เอ๋อ", "ปัญญาอ่อน", "โง่", "บ้า", "ไอ้โง่", "อีโง่", "สมองหมา",
+    "ซวย", "เฮงซวย", "เงี่ยน", "หื่น", "กระแทก", "แตกใน", "ชักว่าว",
+    "ดุ้น", "นมโต", "น้ำกาม", "น้ำว่าว",
+
+    // คำหยาบไทยแบบโรมัน (ทับศัพท์)
+    "kuy", "kuyy", "kuyyy", "kuyz", "kuay", "kwai",
+    "hee", "hie", "hii", "heee", "h33",
+    "yed", "y3d", "yedz", "yet", "yedk", "yesd", "yeddd",
+    "sud", "sut", "sadd", "suddd", "suss",
+    "dork", "dok", "dog", "doktong",
+    "jam", "jeeb", "chim", "chimm", "jimm",
+    "deaw", "dao", "dow", "doww",
+    "namkeng", "numnua", "namtaek", "namkam", "namkham",
+    "tud", "tood", "tudtud", "tutt", "tooddd",
+
+    // คำหยาบอังกฤษ
+    "fuck", "fck", "f**k", "f*ck", "fuk", "fuxk",
+    "shit", "sh1t", "sh!t", "crap",
+    "bitch", "biatch", "b!tch",
+    "asshole", "a**hole", "ass", "dick", "cock", "pussy",
+    "cum", "suck", "blowjob", "handjob", "jerk", "fap"
+  ];
+
+  const lowerMessage = message.toLowerCase();
+
+  // ลบช่องว่างและอักขระพิเศษทุกชนิด เหลือแต่ตัวอักษร/ตัวเลข
+  const compactMessage = lowerMessage.replace(/[^a-zA-Z0-9ก-๙]+/g, '');
+
+  return badWords.some(word =>
+    lowerMessage.includes(word) || compactMessage.includes(word)
+  );
+}
+
     
     // Send message function
     function showCuteAlert() {
