@@ -290,7 +290,8 @@
     </button>
     
     <div id="successMessage" class="success-message">
-      ส่งข้อความเรียบร้อยแล้ว! 🎉💕
+      ส่งข้อความเรียบร้อยแล้ว! 🎉💕<br>
+      <small style="color:#ff8fab;">กำลังนำไปยัง Facebook ใน 3 วินาที... ⏰</small>
     </div>
   </div>
 
@@ -462,9 +463,12 @@
         successDiv.style.display = 'block';
         input.value = '';
         
-        // Hide success message after 3 seconds
+        // Hide success message after 3 seconds and redirect to Facebook
         setTimeout(() => {
           successDiv.style.display = 'none';
+          
+          // เด้งไปยัง Facebook (แก้ URL ตามเพจที่ต้องการ)
+          window.open('https://www.instagram.com/nitade_bu', '_blank');
         }, 3000);
         
         // Add some celebratory hearts
