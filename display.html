@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LED Display - Floating Messages</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700;800&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Kanit', sans-serif;
+            background: #00FF00; /* Pure green for chroma key */
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .message-bubble {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 25px;
+            padding: 15px 25px;
+            box-shadow: 0 8px 32px rgba(255, 105, 180, 0.6);
+            border: 3px solid #ff6b9d;
+            font-size: 24px;
+            font-weight: 600;
+            color: #ff6b9d;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+            min-width: 200px;
+            max-width: 500px;
+            text-align: center;
+            word-wrap: break-word;
+            z-index: 100;
+            animation: float-around 30s ease-in-out infinite;
+            opacity: 0;
+            transform: scale(0);
+            transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+        
+        .message-bubble.show {
+            opacity: 1;
+            transform: scale(1);
+        }
+        
+        .message-bubble.fade-out {
+            opacity: 0;
+            transform: scale(0.3);
+            transition: all 0.8s ease-in-out;
+        }
+        
+        .message-bubble::before {
+            content: '💕';
+            position: absolute;
+            top: -15px;
+            left: -15px;
+            font-size: 20px;
+        }
+        
+        .message-bubble::after {
+            content: '✨';
+            position: absolute;
+            bottom: -15px;
+            right: -15px;
+            font-size: 20px;
+        }
+        
+        @keyframes float-around {
+            0% {
+                transform: translate(0, 0);
+            }
+            25% {
+                transform: translate(300px, -200px);
+            }
+            50% {
+                transform: translate(-200px, 300px);
+            }
+            75% {
+                transform: translate(400px, 100px);
+            }
+            100% {
+                transform: translate(0, 0);
+            }
+        }
+        
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            50% {
+                transform: scale(1.2);
+                opacity: 0.7;
+            }
+        }
+        
+        /* Different animation patterns for variety */
+        .message-bubble.pattern-1 {
+            animation: float-pattern-1 25s ease-in-out infinite;
+        }
+        
+        .message-bubble.pattern-2 {
+            animation: float-pattern-2 35s ease-in-out infinite;
+        }
+        
+        .message-bubble.pattern-3 {
+            animation: float-pattern-3 30s ease-in-out infinite;
+        }
+        
+        @keyframes float-pattern-1 {
+            0% { transform: translate(0, 0); }
+            20% { transform: translate(400px, -100px); }
+            40% { transform: translate(200px, 300px); }
+            60% { transform: translate(-300px, 200px); }
+            80% { transform: translate(-100px, -250px); }
+            100% { transform: translate(0, 0); }
+        }
+        
+        @keyframes float-pattern-2 {
+            0% { transform: translate(0, 0); }
+            16.66% { transform: translate(-200px, -300px); }
+            33.33% { transform: translate(300px, -150px); }
+            50% { transform: translate(400px, 200px); }
+            66.66% { transform: translate(-100px, 350px); }
+            83.33% { transform: translate(-400px, 50px); }
+            100% { transform: translate(0, 0); }
+        }
+        
+        @keyframes float-pattern-3 {
+            0% { transform: translate(0, 0); }
+            25% { transform: translate(500px, 100px); }
+            50% { transform: translate(100px, -400px); }
+            75% { transform: translate(-400px, -100px); }
+            100% { transform: translate(0, 0); }
+        }
+        
+        /* Different colors for variety */
+        .message-bubble.color-pink {
+            border-color: #ff6b9d;
+            color: #ff6b9d;
+            box-shadow: 0 8px 32px rgba(255, 107, 157, 0.6);
+        }
+        
+        .message-bubble.color-purple {
+            border-color: #9b59b6;
+            color: #9b59b6;
+            box-shadow: 0 8px 32px rgba(155, 89, 182, 0.6);
+        }
+        
+        .message-bubble.color-blue {
+            border-color: #3498db;
+            color: #3498db;
+            box-shadow: 0 8px 32px rgba(52, 152, 219, 0.6);
+        }
+        
+        .message-bubble.color-orange {
+            border-color: #f39c12;
+            color: #f39c12;
+            box-shadow: 0 8px 32px rgba(243, 156, 18, 0.6);
+        }
+        
+        .message-bubble.color-red {
+            border-color: #e74c3c;
+            color: #e74c3c;
+            box-shadow: 0 8px 32px rgba(231, 76, 60, 0.6);
+        }
+        
+        /* Status indicator */
+        .status {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 10px 20px;
+            border-radius: 15px;
+            font-weight: 600;
+            z-index: 1000;
+        }
+        
+        .status.connected {
+            color: #27ae60;
+            border: 2px solid #27ae60;
+        }
+        
+        .status.disconnected {
+            color: #e74c3c;
+            border: 2px solid #e74c3c;
+        }
+        
+        /* Debug info */
+        .debug {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 10px;
+            border-radius: 10px;
+            font-size: 14px;
+            z-index: 1000;
+            display: none;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .message-bubble {
+                font-size: 20px;
+                padding: 12px 20px;
+                min-width: 150px;
+                max-width: 300px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .message-bubble {
+                font-size: 18px;
+                padding: 10px 15px;
+                min-width: 120px;
+                max-width: 250px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="status" class="status disconnected">กำลังเชื่อมต่อ...</div>
+    <div id="debug" class="debug">
+        <div>Messages: <span id="messageCount">0</span></div>
+        <div>Active: <span id="activeCount">0</span></div>
+        <div>Last: <span id="lastMessage">-</span></div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js';
+        import { getFirestore, collection, query, orderBy, onSnapshot, where, Timestamp } from 'https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js';
+
+        // Firebase configuration (same as sender)
+        const firebaseConfig = {
+            apiKey: "AIzaSyAYAA--dU7azrYQaFJfsmMvfxLI-NNtoxU",
+            authDomain: "sendtd-demo.firebaseapp.com",
+            projectId: "sendtd-demo",
+            storageBucket: "sendtd-demo.firebasestorage.app",
+            messagingSenderId: "201616527485",
+            appId: "1:201616527485:web:81efdec075072761eaa114",
+            measurementId: "G-D3RF03J1N7"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // Global state
+        let messageCount = 0;
+        let activeMessages = new Set();
+        const statusEl = document.getElementById('status');
+        const debugEl = document.getElementById('debug');
+        const messageCountEl = document.getElementById('messageCount');
+        const activeCountEl = document.getElementById('activeCount');
+        const lastMessageEl = document.getElementById('lastMessage');
+
+        // Colors and patterns for variety
+        const colors = ['pink', 'purple', 'blue', 'orange', 'red'];
+        const patterns = ['pattern-1', 'pattern-2', 'pattern-3'];
+
+        // Show debug info (toggle with 'D' key)
+        document.addEventListener('keydown', (e) => {
+            if (e.key.toLowerCase() === 'd') {
+                debugEl.style.display = debugEl.style.display === 'none' ? 'block' : 'none';
+            }
+        });
+
+        function getRandomPosition() {
+            const margin = 100;
+            return {
+                x: Math.random() * (window.innerWidth - margin * 2) + margin,
+                y: Math.random() * (window.innerHeight - margin * 2) + margin
+            };
+        }
+
+        function createMessageBubble(message) {
+            const bubble = document.createElement('div');
+            bubble.className = 'message-bubble';
+            
+            // Add random color and pattern
+            const randomColor = colors[Math.floor(Math.random() * colors.length)];
+            const randomPattern = patterns[Math.floor(Math.random() * patterns.length)];
+            bubble.classList.add(`color-${randomColor}`, randomPattern);
+            
+            bubble.textContent = message.text;
+            
+            // Set random starting position
+            const pos = getRandomPosition();
+            bubble.style.left = pos.x + 'px';
+            bubble.style.top = pos.y + 'px';
+            
+            // Add unique ID for tracking
+            const messageId = Date.now() + Math.random();
+            bubble.dataset.messageId = messageId;
+            activeMessages.add(messageId);
+            
+            document.body.appendChild(bubble);
+            
+            // Animate in with pop effect
+            requestAnimationFrame(() => {
+                bubble.classList.add('show');
+            });
+            
+            // Remove after 30 seconds with fade effect
+            setTimeout(() => {
+                bubble.classList.add('fade-out');
+                setTimeout(() => {
+                    if (bubble.parentNode) {
+                        bubble.parentNode.removeChild(bubble);
+                    }
+                    activeMessages.delete(messageId);
+                    updateDebugInfo();
+                }, 800); // Wait for fade animation
+            }, 30000);
+            
+            updateDebugInfo();
+        }
+
+        function updateDebugInfo() {
+            messageCountEl.textContent = messageCount;
+            activeCountEl.textContent = activeMessages.size;
+        }
+
+        function updateStatus(connected) {
+            if (connected) {
+                statusEl.textContent = 'เชื่อมต่อแล้ว ✅';
+                statusEl.className = 'status connected';
+            } else {
+                statusEl.textContent = 'ไม่ได้เชื่อมต่อ ❌';
+                statusEl.className = 'status disconnected';
+            }
+        }
+
+        // Listen for new messages in real-time
+        try {
+            // Query for recent messages (last 1 hour to avoid loading too much old data)
+            const oneHourAgo = new Date();
+            oneHourAgo.setHours(oneHourAgo.getHours() - 1);
+            
+            const messagesQuery = query(
+                collection(db, 'messages'),
+                where('timestamp', '>', Timestamp.fromDate(oneHourAgo)),
+                orderBy('timestamp', 'desc')
+            );
+
+            let isFirstLoad = true;
+            
+            const unsubscribe = onSnapshot(messagesQuery, (snapshot) => {
+                updateStatus(true);
+                
+                snapshot.docChanges().forEach((change) => {
+                    if (change.type === 'added') {
+                        const messageData = change.doc.data();
+                        
+                        // Skip initial load to avoid showing old messages
+                        if (isFirstLoad) return;
+                        
+                        console.log('New message received:', messageData);
+                        
+                        messageCount++;
+                        lastMessageEl.textContent = new Date().toLocaleTimeString() + ' - ' + messageData.text.substring(0, 20) + (messageData.text.length > 20 ? '...' : '');
+                        
+                        createMessageBubble(messageData);
+                    }
+                });
+                
+                isFirstLoad = false;
+            }, (error) => {
+                console.error('Error listening to messages:', error);
+                updateStatus(false);
+            });
+            
+        } catch (error) {
+            console.error('Error setting up Firebase listener:', error);
+            updateStatus(false);
+        }
+
+        // Initial status
+        updateStatus(false);
+        
+        // Test message for development (remove in production)
+        setTimeout(() => {
+            console.log('Adding test message...');
+            createMessageBubble({ text: 'ทดสอบข้อความ! 💕' });
+        }, 2000);
+
+        // Handle window resize
+        window.addEventListener('resize', () => {
+            // Reposition any existing messages that might be off-screen
+            const messages = document.querySelectorAll('.message-bubble');
+            messages.forEach(bubble => {
+                const rect = bubble.getBoundingClientRect();
+                if (rect.right > window.innerWidth || rect.bottom > window.innerHeight) {
+                    const pos = getRandomPosition();
+                    bubble.style.left = pos.x + 'px';
+                    bubble.style.top = pos.y + 'px';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
